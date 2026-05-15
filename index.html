@@ -20,6 +20,15 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             text-align: center;
         }
+        /* ヘッダー画像のスタイル */
+        .header-logo {
+            max-width: 100%; /* 親要素の幅に合わせる */
+            height: auto;    /* アスペクト比を維持 */
+            margin-bottom: 20px; /* 下にスペース */
+            display: block;  /* 中央揃えのため */
+            margin-left: auto; /* 中央揃え */
+            margin-right: auto; /* 中央揃え */
+        }
         h1 {
             color: #2c3e50; /* 落ち着いたダークブルー */
             margin-bottom: 25px;
@@ -128,6 +137,8 @@
     </style>
 </head>
 <body>
+    <img src="logo.gif" alt="会社ロゴ" class="header-logo">
+    
     <h1>メール配信停止</h1>
 
     <p>
