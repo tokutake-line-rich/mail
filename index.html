@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メール配信停止</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50; /* 落ち着いたダークブルー */
+            margin-bottom: 25px;
+        }
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            line-height: 1.5;
+        }
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .checkbox-group {
+            margin-top: 15px;
+        }
+        .checkbox-group div {
+            margin-bottom: 10px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.2); /* チェックボックスを少し大きく */
+            vertical-align: middle;
+        }
+        .checkbox-group label {
+            display: inline; /* チェックボックスとラベルを横並びに */
+            font-weight: normal;
+            vertical-align: middle;
+        }
+        button {
+            background-color: #428bca; /* 穏やかなブルー */
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #3071a9; /* ホバーで少し濃いブルー */
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            color: #666;
+        }
+        .message {
+            display: none;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .success-message {
+            background-color: #dff0d8; /* 成功時のグリーン */
+            border: 1px solid #d0e9c6;
+            color: #3c763d;
+        }
+        .error-message {
+            background-color: #fcf8e3; /* 警告時の薄いイエロー */
+            border: 1px solid #faebcc;
+            color: #8a6d3b; /* 警告時の落ち着いた茶色 */
+        }
+        .note {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #666;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+        .footer-info {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.8;
+            text-align: center;
+        }
+        .footer-info p {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>メール配信停止</h1>
+
+    <p>
+        いつも弊社からの情報メールをお受け取りいただき、誠にありがとうございます。<br>
+        この度のメール配信停止をご希望とのこと、承知いたしました。
+    </p>
+
+    <div class="form-group">
+        <label>メール配信停止の理由をお聞かせいただけますでしょうか (任意)</label>
+        <div class="checkbox-group">
+            <div>
+                <input type="checkbox" id="reason1" name="unsubscribeReason" value="異動で業務上不要となった">
+                <label for="reason1">異動で業務上不要となった</label>
+            </div>
+            <div>
+                <input type="checkbox" id="reason2" name="unsubscribeReason" value="メール配信の頻度が多い">
+                <label for="reason2">メール配信の頻度が多い</label>
+            </div>
+            <div>
+                <input type="checkbox" id="reason3" name="unsubscribeReason" value="共有アドレスのため">
+                <label for="reason3">共有アドレスのため</label>
+            </div>
+            <div>
+                <input type="checkbox" id="reason4" name="unsubscribeReason" value="他の人にも送られてくるため">
+                <label for="reason4">他の人にも送られてくるため</label>
+            </div>
+            <div>
+                <input type="checkbox" id="reason5" name="unsubscribeReason" value="複数のアドレスに送られてくるため">
+                <label for="reason5">複数のアドレスに送られてくるため</label>
+            </div>
+            <div>
+                <input type="checkbox" id="reasonOther" name="unsubscribeReason" value="その他">
+                <label for="reasonOther">その他</label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group" id="otherReasonGroup" style="display: none;">
+        <label for="otherReason">具体的な理由をご記入ください</label>
+        <textarea id="otherReason" placeholder="例: サービス利用を終了したため、など"></textarea>
+    </div>
+
+    <button id="unsubscribeButton">配信停止手続きを完了する</button>
+
+    <div id="successMessage" class="message success-message">
+        メール配信の停止手続きが完了いたしました。<br>
+        これにて、お客様へのメール配信は停止されます。<br>
+        これまで誠にありがとうございました。また別の形でお客様のお役に立てる機会がございましたら幸いです。
+    </div>
+
+    <div id="errorMessage" class="message error-message">
+        申し訳ございません、メール配信停止処理中に予期せぬエラーが発生いたしました。<br>
+        大変お手数ですが、しばらくしてから再度お試しいただくか、弊社のサポートまでご連絡ください。
+    </div>
+
+    <p class="note">
+        今後、弊社からの情報が必要になった際は、お手数ですが改めてご連絡いただけますでしょうか。<br>
+        引き続き、何らかの形でお客様のお役に立てることを願っております。
+    </p>
+
+    <div class="footer-info">
+        <p>何かご不明な点がございましたら、お気軽にお問い合わせくださいませ。</p>
+        <p>お客様サポートセンター : <a href="tel:050-2018-2292">050-2018-2292</a>　（平日9：00～17：00）</p>
+        <p>徳武産業株式会社<br>〒761-0901　香川県さぬき市大川町富田西3007</p>
+    </div>
+
+    <script>
+        const reasonCheckboxes = document.querySelectorAll('input[name="unsubscribeReason"]');
+        const reasonOtherCheckbox = document.getElementById('reasonOther');
+        const otherReasonGroup = document.getElementById('otherReasonGroup');
+        const otherReasonTextarea = document.getElementById('otherReason');
+        const unsubscribeButton = document.getElementById('unsubscribeButton');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const customerId = urlParams.get('token');
+
+        if (!customerId) {
+            unsubscribeButton.disabled = true;
+            unsubscribeButton.textContent = '申し訳ございません、停止情報が確認できませんでした。'; 
+        }
+
+        reasonOtherCheckbox.addEventListener('change', () => {
+            if (reasonOtherCheckbox.checked) {
+                otherReasonGroup.style.display = 'block';
+            } else {
+                otherReasonGroup.style.display = 'none';
+                otherReasonTextarea.value = ''; // チェックが外れたら内容をクリア
+            }
+        });
+
+        const powerAutomateWebhookUrl = 'YOUR_POWER_AUTOMATE_HTTP_TRIGGER_URL_HERE'; 
+
+        unsubscribeButton.addEventListener('click', async () => {
+            if (!customerId) {
+                errorMessage.textContent = 'メール配信停止に必要な情報が不足しているため、処理できませんでした。';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            unsubscribeButton.disabled = true;
+            unsubscribeButton.textContent = '手続き処理中です...';
+            
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            const selectedReasons = [];
+            reasonCheckboxes.forEach(checkbox => {
+                if (checkbox.checked && checkbox.value !== 'その他') { // 「その他」自体は理由として含めない
+                    selectedReasons.push(checkbox.value);
+                }
+            });
+            const otherReason = reasonOtherCheckbox.checked ? otherReasonTextarea.value.trim() : '';
+
+            try {
+                const response = await fetch(powerAutomateWebhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        customerId: customerId,
+                        reasons: selectedReasons, // 選択された理由の配列
+                        otherReason: otherReason // 「その他」のテキスト
+                    })
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.status === 'success') {
+                        successMessage.style.display = 'block';
+                    } else {
+                        errorMessage.textContent = result.message || '申し訳ございません、メール配信停止処理中に予期せぬエラーが発生いたしました。';
+                        errorMessage.style.display = 'block';
+                        unsubscribeButton.textContent = '再度お試しください';
+                        unsubscribeButton.disabled = false;
+                    }
+                } else {
+                    errorMessage.textContent = `通信中に問題が発生しました (エラーコード: ${response.status})。<br>大変お手数ですが、しばらくしてから再度お試しいただくか、弊社のサポートまでご連絡ください。`;
+                    errorMessage.style.display = 'block';
+                    unsubscribeButton.textContent = '再度お試しください';
+                    unsubscribeButton.disabled = false;
+                }
+            } catch (error) {
+                console.error('通信エラー:', error);
+                errorMessage.textContent = 'インターネット接続または通信中に問題が発生いたしました。<br>大変お手数ですが、接続状況をご確認の上、再度お試しください。';
+                errorMessage.style.display = 'block';
+                unsubscribeButton.textContent = '再度お試しください';
+                unsubscribeButton.disabled = false;
+            } finally {
+                if (successMessage.style.display === 'block') {
+                    unsubscribeButton.textContent = '手続きは完了しました';
+                    unsubscribeButton.disabled = true;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
